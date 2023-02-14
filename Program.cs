@@ -18,12 +18,19 @@
 
         public static IEnumerable<double> DoTake(this IEnumerable<double> list , int count){
             int index = 0;
-            foreach(var item in list){
-                 if(index<count){
+            IEnumerator<double> Cursor = list.GetEnumerator();
+            do{
+                if(index!=count){
+                    Cursor.MoveNext();
+                }
+                var v = Cursor.Current;
+                if(index<count){
+                    yield return v;
                     index++;
-                    yield return item; 
-                 }          
-            }
+                }else{
+                    yield break;
+                }
+            } while(true);       
         }
 
         public static IEnumerable<double> DoSelect(this IEnumerable<double> list , Func<double , double> function){
@@ -35,15 +42,18 @@
 
         public static double AddOne(double x)
         {
+            Console.WriteLine("I am adding one");
             return x+1;
         }
 
         public static double Square(double x)
         {
+             Console.WriteLine("I am doing Square");
             return x+x;
         }
         public static double MinusTen(double x)
         {
+             Console.WriteLine("I am sudtracting ten ----------------------");
             return x-10;
         }
 }
